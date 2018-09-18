@@ -1,0 +1,55 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+.mainPane {
+    border: 1px solid black;
+    border-radius: 25px;
+    margin: 5% 15% 0 15%;
+    padding: 10px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+}
+#DropboxButton {
+    margin: 0 45% 0 45%;
+}
+#GDriveButton {
+    margin: 0 45% 0 45%;
+}
+#DropboxForm {
+    display: none;
+    margin: 0 15% 0 15%;
+}
+#GDriveForm {
+    display: none;
+    margin: 0 15% 0 15%;
+}
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
