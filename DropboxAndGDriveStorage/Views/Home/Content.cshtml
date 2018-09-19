@@ -1,0 +1,26 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "Access";
+}
+
+<p>@Model</p>
+
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>List</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @foreach (string s in Model)
+            {
+                <td>
+                    s
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>

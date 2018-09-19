@@ -11,34 +11,56 @@ namespace DropboxAndGDriveStorage.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private string token;
+
+        [HttpGet]
+        public IActionResult Index(string loginName)
         {
-            return View();
+            return View(loginName);
         }
         [HttpPost]
-        public string Access(string dropboxToken)
+        public IActionResult Login(string dropboxToken)
         {
+            this.token = dropboxToken;
             string name = "";
-            using (var dbx = new DropboxClient(dropboxToken))
+            using (var dbx = new DropboxClient(this.token))
             {
                 var full = dbx.Users.GetCurrentAccountAsync().Result;
-                //Console.WriteLine("{0} - {1}", full.Name.DisplayName, full.Email);
                 name = name + $"Name: {full.Name.DisplayName}, email: {full.Email}";
             }
-
-            return name;
+            return RedirectToAction("Index", "Home", new { loginName = name });
         }
 
-        public IActionResult About()
+        public List<string> Content()
         {
-            ViewData["Message"] = "Your application description page.";
+            List<string> content = new List<string>();
+            using (var dbx = new DropboxClient(this.token))
+            {
+                var list = dbx.Files.ListFolderAsync(string.Empty).Result;
+
+                foreach (var item in list.Entries.Where(i => i.IsFolder))
+                {
+                    content.Add(item.Name);
+                }
+
+                foreach (var item in list.Entries.Where(i => i.IsFile))
+                {
+                    content.Add(item.AsFile.Size + " " + item.Name);
+                }
+            }
+            return content;
+        }
+
+        public IActionResult Download()
+        {
+            ViewData["Message"] = "Your download page.";
 
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Upload()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = "Your upload page.";
 
             return View();
         }

@@ -1,11 +1,20 @@
-﻿@{
+﻿@model string
+@{
     ViewData["Title"] = "Home Page";
 }
+
+@if (Model != null)
+{
+    <div class="alert alert-success">
+        <strong>Success!</strong>
+    </div>
+}
+
 
 <div class="mainPane">
     <button id="DropboxButton" class="btn btn-success">Dropbox</button>
     <div id="DropboxForm">
-        <form action="/Home/Access" method="post">
+        <form action="/Home/Login" method="post">
             <div class="form-group">
                 <label for="dropboxToken">Access Token</label>
                 <input class="form-control" name="dropboxToken" placeholder="Token" required>
@@ -14,7 +23,7 @@
         </form>
     </div>
 
-    <hr/>
+    <hr />
 
     <button id="GDriveButton" class="btn btn-success">GDrive</button>
     <div id="GDriveForm">
