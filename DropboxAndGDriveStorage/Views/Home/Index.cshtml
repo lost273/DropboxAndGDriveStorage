@@ -5,22 +5,17 @@
 <div class="mainPane">
     <button id="DropboxButton" class="btn btn-success">Dropbox</button>
     <div id="DropboxForm">
-        <form action="" method="post">
+        <form action="/Home/Access" method="post">
             <div class="form-group">
-                <label for="dropboxEmail">Email</label>
-                <input type="email" class="form-control" id="dropboxEmail" placeholder="Email" required>
+                <label for="dropboxToken">Access Token</label>
+                <input class="form-control" name="dropboxToken" placeholder="Token" required>
             </div>
-            <div class="form-group">
-                <label for="dropboxPassword">Password</label>
-                <input type="password" class="form-control" id="dropboxPassword" placeholder="Password" required>
-            </div>
-            
             <button type="submit" class="btn btn-primary">Configure</button>
         </form>
     </div>
-    
+
     <hr/>
-    
+
     <button id="GDriveButton" class="btn btn-success">GDrive</button>
     <div id="GDriveForm">
         <form action="" method="post">
@@ -32,7 +27,7 @@
                 <label for="gDrivePassword">Password</label>
                 <input type="password" class="form-control" id="gDrivePassword" placeholder="Password" required>
             </div>
-            
+
             <button type="submit" class="btn btn-primary">Configure</button>
         </form>
     </div>
