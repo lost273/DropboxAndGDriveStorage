@@ -1,9 +1,8 @@
 ﻿@model List<string>
 @{
-    ViewData["Title"] = "Access";
+    ViewData["Title"] = "List of the files";
 }
 
-<p>@Model</p>
 
 
 
@@ -14,13 +13,13 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            @foreach (string s in Model)
-            {
+        @foreach (string s in Model)
+        {
+            <tr>
                 <td>
-                    s
+                    @s
                 </td>
-            }
-        </tr>
+            </tr>
+        }
     </tbody>
 </table>

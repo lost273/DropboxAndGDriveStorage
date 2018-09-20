@@ -11,46 +11,52 @@ namespace DropboxAndGDriveStorage.Controllers
 {
     public class HomeController : Controller
     {
-        private string token;
+        static private string token;
 
         [HttpGet]
-        public IActionResult Index(string loginName)
+        public IActionResult Index(List<string> credentials)
         {
-            return View(loginName);
+            return View(credentials);
         }
         [HttpPost]
         public IActionResult Login(string dropboxToken)
         {
-            this.token = dropboxToken;
-            string name = "";
-            using (var dbx = new DropboxClient(this.token))
+            token = dropboxToken;
+            List<string> loginCredentials = new List<string>();
+
+            using (var dbx = new DropboxClient(token))
             {
                 var full = dbx.Users.GetCurrentAccountAsync().Result;
-                name = name + $"Name: {full.Name.DisplayName}, email: {full.Email}";
+                loginCredentials.Add(full.Name.DisplayName);
+                loginCredentials.Add(full.Email);
             }
-            return RedirectToAction("Index", "Home", new { loginName = name });
+            return RedirectToAction("Index", "Home", new { credentials = loginCredentials });
         }
 
-        public List<string> Content()
+        public IActionResult Content()
         {
             List<string> content = new List<string>();
-            using (var dbx = new DropboxClient(this.token))
+            using (var dbx = new DropboxClient(token))
             {
-                var list = dbx.Files.ListFolderAsync(string.Empty).Result;
-
-                foreach (var item in list.Entries.Where(i => i.IsFolder))
-                {
-                    content.Add(item.Name);
-                }
-
-                foreach (var item in list.Entries.Where(i => i.IsFile))
-                {
-                    content.Add(item.AsFile.Size + " " + item.Name);
-                }
+                getAllNames(content, dbx, string.Empty);
             }
-            return content;
+            return View(content);
         }
+        private void getAllNames(List<string> list, DropboxClient client, string path)
+        {
+            var names = client.Files.ListFolderAsync(path).Result;
 
+            foreach (var item in names.Entries.Where(i => i.IsFolder))
+            {
+                list.Add(item.Name);
+                getAllNames(list, client, item.PathDisplay);
+            }
+
+            foreach (var item in names.Entries.Where(i => i.IsFile))
+            {
+                list.Add(item.Name);
+            }
+        }
         public IActionResult Download()
         {
             ViewData["Message"] = "Your download page.";
