@@ -27,7 +27,7 @@ namespace DropboxAndGDriveStorage.Controllers
             using (var dbx = new DropboxClient(token))
             {
                 var full = dbx.Users.GetCurrentAccountAsync().Result;
-                loginCredentials.Add(full.Name.DisplayName);
+                //loginCredentials.Add(full.Name.DisplayName);
                 loginCredentials.Add(full.Email);
             }
             return RedirectToAction("Index", "Home", new { credentials = loginCredentials });
@@ -48,13 +48,13 @@ namespace DropboxAndGDriveStorage.Controllers
 
             foreach (var item in names.Entries.Where(i => i.IsFolder))
             {
-                list.Add(item.Name);
+                list.Add($"[ {path}/{item.Name} ]");
                 getAllNames(list, client, item.PathDisplay);
             }
 
             foreach (var item in names.Entries.Where(i => i.IsFile))
             {
-                list.Add(item.Name);
+                list.Add($"{path}/{item.Name}");
             }
         }
         public IActionResult Download()

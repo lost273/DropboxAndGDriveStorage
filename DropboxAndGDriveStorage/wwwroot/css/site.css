@@ -4,7 +4,6 @@
 }
 .mainPane {
     border: 1px solid black;
-    border-radius: 25px;
     margin: 5% 15% 0 15%;
     padding: 10px;
     box-shadow: 5px 5px 5px rgba(0,0,0,0.5);

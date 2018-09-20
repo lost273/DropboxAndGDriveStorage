@@ -5,21 +5,26 @@
 
 
 
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>List</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (string s in Model)
-        {
+<div class="mainPane">
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <td>
-                    @s
-                </td>
+                <th>List</th>
+                <th>Action</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (string s in Model)
+            {
+                <tr>
+                    <td>
+                        @s
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

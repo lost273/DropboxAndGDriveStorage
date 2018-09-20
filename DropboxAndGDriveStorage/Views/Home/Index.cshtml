@@ -5,12 +5,15 @@
 <br/>
 @if (Model.Count != 0)
 {
-    <div class="alert alert-success">
-        <strong>Success!</strong>
-        @foreach (string s in Model) {
-            <p>@s</p>
-        }
-    </div>
+<div class="alert alert-success">
+    <strong>Success!</strong>
+    <br/>
+    <u>Logged as:</u>
+    @foreach (string s in Model)
+    {
+        @s
+    }
+</div>
 }
 
 
