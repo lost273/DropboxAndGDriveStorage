@@ -2,6 +2,10 @@
     padding-top: 50px;
     padding-bottom: 20px;
 }
+input[type="checkbox"] {
+    width: 1.5em;
+    height: 1.5em;
+}
 .mainPane {
     border: 1px solid black;
     margin: 5% 15% 0 15%;

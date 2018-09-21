@@ -6,11 +6,19 @@
 
 
 <div class="mainPane">
+    <button id="UploadButton" class="btn btn-success">Upload</button>
+    <button type="submit" class="btn btn-primary">Download</button>
+    <button id="RenameButton" class="btn btn-warning">Rename</button>
+    <button id="DeleteButton" class="btn btn-danger">Delete</button>
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="allCheck" value=""></label>
+                    </div>
+                </th>
                 <th>List</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -18,13 +26,39 @@
             {
                 <tr>
                     <td>
-                        @s
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="box" value="@s"></label>
+                        </div>
                     </td>
                     <td>
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        @s
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<script>
+    var flagsArray = [];
+
+    $(document).ready(function () {
+        $("#DeleteButton").click(function () {
+            $("input:checkbox[name=box]:checked").each(function () {
+                flagsArray.push($(this).val());
+            });
+            console.log(flagsArray);
+            flagsArray.length = 0;
+        });
+        $("input:checkbox[name=allCheck]").click(function () {
+            var status = false;
+            if ($("input:checkbox[name=allCheck]").is(":checked")) {
+                status = true;
+                console.log("checked");
+            }
+            $("input:checkbox[name=box]").each(function () {
+                $(this).prop("checked", status);
+            });
+        });
+    });
+</script>
