@@ -40,13 +40,29 @@
 </div>
 
 <script>
-    var flagsArray = [];
-
     $(document).ready(function () {
         $("#DeleteButton").click(function () {
+            var flagsArray = [];
             $("input:checkbox[name=box]:checked").each(function () {
                 flagsArray.push($(this).val());
             });
+
+            $.ajax({
+                url: '/Home/Delete',
+                contentType: 'application/json',
+                async: true,
+                type: 'POST',
+                traditional: true,
+                data: JSON.stringify(flagsArray),
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("FAIL: " + errorThrown);
+                },
+                success: function (data, textStatus, jqXHR) {
+                    console.log("SUCCESS!");
+                    location.reload();
+                }
+            });
+
             console.log(flagsArray);
             flagsArray.length = 0;
         });

@@ -48,7 +48,7 @@ namespace DropboxAndGDriveStorage.Controllers
 
             foreach (var item in names.Entries.Where(i => i.IsFolder))
             {
-                list.Add($"[ {path}/{item.Name} ]");
+                list.Add($"{path}/{item.Name}");
                 getAllNames(list, client, item.PathDisplay);
             }
 
@@ -57,6 +57,17 @@ namespace DropboxAndGDriveStorage.Controllers
                 list.Add($"{path}/{item.Name}");
             }
         }
+        public void Delete([FromBody]List<string> paths)
+        {
+            using (var dbx = new DropboxClient(token))
+            {
+                foreach (string s in paths)
+                {
+                    var result = dbx.Files.DeleteV2Async(s).Result;
+                }
+            }
+        }
+
         public IActionResult Download()
         {
             ViewData["Message"] = "Your download page.";
