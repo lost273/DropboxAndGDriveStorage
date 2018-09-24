@@ -7,7 +7,7 @@
 
 <div class="mainPane">
     <button id="UploadButton" class="btn btn-success">Upload</button>
-    <button type="submit" class="btn btn-primary">Download</button>
+    <button id="DownloadButton" class="btn btn-primary">Download</button>
     <button id="RenameButton" class="btn btn-warning">Rename</button>
     <button id="DeleteButton" class="btn btn-danger">Delete</button>
     <table class="table table-striped">
@@ -62,15 +62,40 @@
                     location.reload();
                 }
             });
-
-            console.log(flagsArray);
             flagsArray.length = 0;
         });
+
+        $("#DownloadButton").click(function () {
+            var flagsArray = [];
+            $("input:checkbox[name=box]:checked").each(function () {
+                flagsArray.push($(this).val());
+            });
+
+            $.ajax({
+                url: '/Home/Download',
+                contentType: 'application/json',
+                async: true,
+                type: 'POST',
+                traditional: true,
+                data: JSON.stringify(flagsArray),
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("FAIL: " + errorThrown);
+                },
+                success: function (data, textStatus, jqXHR) {
+                    console.log("SUCCESS!");
+                    window.location.href = "@Url.RouteUrl(new
+            { Controller = "Home", Action = "Download"})/?file=" + "someFilename.txt";
+                }
+            });
+            flagsArray.length = 0;
+        });
+
+
+
         $("input:checkbox[name=allCheck]").click(function () {
             var status = false;
             if ($("input:checkbox[name=allCheck]").is(":checked")) {
                 status = true;
-                console.log("checked");
             }
             $("input:checkbox[name=box]").each(function () {
                 $(this).prop("checked", status);

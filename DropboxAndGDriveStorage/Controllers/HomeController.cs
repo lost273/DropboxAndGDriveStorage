@@ -68,11 +68,31 @@ namespace DropboxAndGDriveStorage.Controllers
             }
         }
 
-        public IActionResult Download()
+        public FileResult Download([FromBody]List<string> paths)
         {
-            ViewData["Message"] = "Your download page.";
+            byte[] fileBytes = null;
 
-            return View();
+            using (var dbx = new DropboxClient(token))
+            {
+                using (var response = dbx.Files.DownloadAsync(paths.FirstOrDefault()).Result)
+                {
+                    fileBytes = response.GetContentAsByteArrayAsync().Result;
+                }
+            }
+
+            if (fileBytes == null)
+            {
+                return null;
+            }
+
+            var contentDispositionHeader = new System.Net.Mime.ContentDisposition
+            {
+                Inline = false,
+                FileName = "someFilename.txt"
+            };
+
+            Response.Headers.Add("Content-Disposition", contentDispositionHeader.ToString());
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet);
         }
 
         public IActionResult Upload()
