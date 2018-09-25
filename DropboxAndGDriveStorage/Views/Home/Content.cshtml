@@ -83,8 +83,22 @@
                 },
                 success: function (data, textStatus, jqXHR) {
                     console.log("SUCCESS!");
-                    window.location.href = "@Url.RouteUrl(new
-            { Controller = "Home", Action = "Download"})/?file=" + "someFilename.txt";
+
+                    //'createObjectURL' has to be Blob or File object, not data itself
+                    var binaryData = [];
+                    binaryData.push(data);
+                    
+                    // Trick for making downloadable link
+                    var a;
+                    a = document.createElement('a');
+                    a.href = window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
+
+                    // Give filename you wish to download
+                    a.download = "test-file.txt";
+                    console.log(flagsArray);
+                    a.style.display = 'none';
+                    document.body.appendChild(a);
+                    a.click();
                 }
             });
             flagsArray.length = 0;
