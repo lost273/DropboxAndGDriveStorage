@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DropboxAndGDriveStorage.Models;
 using Dropbox.Api;
+using System.Text;
+using System.IO;
+using Dropbox.Api.Files;
 
 namespace DropboxAndGDriveStorage.Controllers
 {
@@ -98,11 +101,19 @@ namespace DropboxAndGDriveStorage.Controllers
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet);
         }
 
-        public IActionResult Upload()
+        [HttpPost]
+        public void Upload(string folder, string file, string content)
         {
-            ViewData["Message"] = "Your upload page.";
-
-            return View();
+            using (var dbx = new DropboxClient(token))
+            {
+                using (var mem = new MemoryStream(Encoding.UTF8.GetBytes(content)))
+                {
+                    var updated = dbx.Files.UploadAsync(
+                        folder + "/" + file,
+                        WriteMode.Overwrite.Instance,
+                        body: mem);
+                }
+            }
         }
 
         public IActionResult Error()
