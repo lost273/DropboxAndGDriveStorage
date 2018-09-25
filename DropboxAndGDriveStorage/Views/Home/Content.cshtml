@@ -77,6 +77,10 @@
                 async: true,
                 type: 'POST',
                 traditional: true,
+                processData: false,
+                xhrFields: {
+                    responseType: 'blob'
+                },
                 data: JSON.stringify(flagsArray),
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("FAIL: " + errorThrown);
@@ -84,18 +88,20 @@
                 success: function (data, textStatus, jqXHR) {
                     console.log("SUCCESS!");
 
+                    var nameField = jqXHR.getResponseHeader('content-disposition');
+                    var index = nameField.indexOf('=') + 1;
+
                     //'createObjectURL' has to be Blob or File object, not data itself
                     var binaryData = [];
                     binaryData.push(data);
-                    
+
                     // Trick for making downloadable link
                     var a;
                     a = document.createElement('a');
-                    a.href = window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
+                    a.href = window.URL.createObjectURL(new Blob(binaryData, { type: "octet/stream"}));
 
                     // Give filename you wish to download
-                    a.download = "test-file.txt";
-                    console.log(flagsArray);
+                    a.download = nameField.slice(index);
                     a.style.display = 'none';
                     document.body.appendChild(a);
                     a.click();
@@ -103,8 +109,6 @@
             });
             flagsArray.length = 0;
         });
-
-
 
         $("input:checkbox[name=allCheck]").click(function () {
             var status = false;

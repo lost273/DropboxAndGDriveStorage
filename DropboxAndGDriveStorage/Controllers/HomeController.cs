@@ -71,10 +71,13 @@ namespace DropboxAndGDriveStorage.Controllers
         public FileResult Download([FromBody]List<string> paths)
         {
             byte[] fileBytes = null;
+            string path = paths.FirstOrDefault();
+            int index = path.LastIndexOf('/');
+            string fileName = path.Substring(index+1);
 
             using (var dbx = new DropboxClient(token))
             {
-                using (var response = dbx.Files.DownloadAsync(paths.FirstOrDefault()).Result)
+                using (var response = dbx.Files.DownloadAsync(path).Result)
                 {
                     fileBytes = response.GetContentAsByteArrayAsync().Result;
                 }
@@ -88,7 +91,7 @@ namespace DropboxAndGDriveStorage.Controllers
             var contentDispositionHeader = new System.Net.Mime.ContentDisposition
             {
                 Inline = false,
-                FileName = "someFilename.txt"
+                FileName = fileName
             };
 
             Response.Headers.Add("Content-Disposition", contentDispositionHeader.ToString());
